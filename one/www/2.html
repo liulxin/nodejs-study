@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <script src="http://www.jq22.com/jquery/jquery-3.3.1.js"></script>
+
+    用户：<input type="text" id="user"> <br>
+    密码： <input type="password" id="pass"> <br>
+
+    <input type="button" value="注册" id="btn1">
+    <input type="button" value="登陆" id="btn2">
+
+    <script>
+        $(function(){
+            $('#btn1').click(function () {
+                $.ajax({
+                    url: '/reg',
+                    dataType: 'json',
+                    data: {
+                        username: $('#user').val(),
+                        password: $('#pass').val()
+                    }
+                }).then(json => {
+                    if(json.error){
+                        alert(json.msg)
+                    }else{
+                        alert('注册成功')
+                    }
+                }, err => {
+                    alert('注册失败')
+                })
+            });
+            $('#btn2').click(function () {
+                $.ajax({
+                    url: '/login',
+                    dataType: 'json',
+                    data: {
+                        username: $('#user').val(),
+                        password: $('#pass').val()
+                    }
+                }).then(json => {
+                    if(json.error){
+                        alert(json.msg)
+                    }else{
+                        alert('登陆成功')
+                    }
+                }, err => {
+                    alert('登陆失败')
+                })
+            })
+        })
+    </script>
+</body>
+</html>
