@@ -1,8 +1,9 @@
-const { getList } = require('../controller/blog');
+const { getList, getDetail, newBlog, updateBlog, delBlog } = require('../controller/blog');
 const { SuccessMedel, ErrorModel } = require('../model/resModel');
 
 const handleBlogRouter = (req, res) => {
   const method = req.method;
+  const id = req.query.id;
 
   if (method === 'GET' && req.path === '/api/blog/list') {
     const author = req.query.author || '';
@@ -13,26 +14,31 @@ const handleBlogRouter = (req, res) => {
   }
 
   if (method === 'GET' && req.path === '/api/blog/detail') {
-    return {
-      msg: '获取blogdetail的接口'
-    }
+    const detailData = getDetail(id)
+    return new SuccessMedel(detailData);
   }
 
   if (method === 'POST' && req.path === '/api/blog/new') {
-    return {
-      msg: 'new blog接口'
-    }
+    const blogData = req.body;
+    const data = newBlog(blogData);
+    return new SuccessMedel(data);
   }
 
   if (method === 'POST' && req.path === '/api/blog/update') {
-    return {
-      msg: 'update blog接口'
+    const result = updateBlog(id, req.body);
+    if(result) {
+      return new SuccessMedel()
+    }else{
+      return new ErrorModel()
     }
   }
 
   if (method === 'POST' && req.path === '/api/blog/del') {
-    return {
-      msg: 'del blog接口'
+    const result = delBlog(id);
+    if(result) {
+      return new SuccessMedel()
+    }else{
+      return new ErrorModel()
     }
   }
 
